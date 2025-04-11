@@ -5,4 +5,8 @@
 5. Inside the real_time_prediction.py, at line 33 labels dict, define hand gestures based on their folder name in the "data" folder.
 6. Run real_time_prediction.py to start predicting asl.
 
+
+how to test:
+Since there's a model file already, just run the real_time_prediction to test the program
+
 ------------------------NOT FINAL README------------------------------
