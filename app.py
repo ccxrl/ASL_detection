@@ -36,14 +36,13 @@ camera_active = False
 speak_enabled = True
 
 # Initialize text-to-speech engine
-# Will create separate engine instances per thread for better reliability
-engine = None  # We'll create engine instances in the speak_text function
+engine = None 
 
 # Load the model
 try:
     model_path = os.path.join('ASL_detection', 'ASL_detection', 'model.p')
     if not os.path.exists(model_path):
-        model_path = 'model.p'  # Fallback to current directory
+        model_path = 'model.p'
     
     model_dict = pickle.load(open(model_path, 'rb'))
     model = model_dict['model']
@@ -74,11 +73,8 @@ def autocorrect_word(word):
 def speak_text(text):
     """Thread-safe function to speak text"""
     if speak_enabled:
-        # Create a new thread for TTS to avoid blocking
-        # Use a direct approach to ensure the engine works reliably
         def tts_thread():
             try:
-                # Create a local engine instance for this thread to avoid conflicts
                 local_engine = pyttsx3.init()
                 local_engine.setProperty('rate', 150)
                 local_engine.say(text)
@@ -87,7 +83,7 @@ def speak_text(text):
                 print(f"TTS Error: {str(e)}")
         
         thread = threading.Thread(target=tts_thread)
-        thread.daemon = True  # Set as daemon so it doesn't block program exit
+        thread.daemon = True
         thread.start()
 
 def process_frame(frame):
@@ -99,7 +95,6 @@ def process_frame(frame):
     
     H, W, _ = frame.shape
     
-    # Add overlay for text area
     overlay = frame.copy()
     cv2.rectangle(overlay, (0, 0), (W, 60), (0, 0, 0), -1)
     cv2.addWeighted(overlay, 0.5, frame, 0.5, 0, frame)
